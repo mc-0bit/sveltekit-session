@@ -1,6 +1,14 @@
 {
 	"name": "sveltekit-session",
-	"version": "0.1.1",
+	"description": "A session management library for SvelteKit",
+	"version": "0.1.2",
+	"keywords": ["svelte", "sveltekit", "session", "redis", "sveltekit-session"],
+	"homepage": "https://github.com/mc-0bit/sveltekit-session",
+	"author": "mc-0bit",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mc-0bit/sveltekit-session.git"
+	},
 	"license": "MIT",
 	"scripts": {
 		"dev": "vite dev",
