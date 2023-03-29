@@ -2,8 +2,6 @@
 
 Simple SvelteKit session management.
 
-<br>
-
 ## Installation
 
 ```
@@ -15,8 +13,6 @@ npm install sveltekit-session
 ```
 npm install sveltekit-session ioredis
 ```
-
-<br>
 
 ## Quickstart
 
@@ -55,8 +51,6 @@ export const handle = sequence(handleSession(sessionStore), myHandle); // make s
 
 Check out the SvelteKit docs on [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence).
 
-<br>
-
 ## Using SvelteKit-Session
 
 It's as simple as this.
@@ -87,8 +81,6 @@ export const load = async (event) => {
 	await sessionStore.destroySession(sessionId);
 };
 ```
-
-<br>
 
 ## Typing your session
 
