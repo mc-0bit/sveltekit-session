@@ -18,7 +18,7 @@ export interface Store {
 }
 
 class SvelteKitSession<T> {
-	private sessionData: T;
+	private sessionData: Simplify<T>;
 	private sessionId: string;
 	private sessionName: string;
 	private sessionStore: SessionStore;
