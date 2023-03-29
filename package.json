@@ -1,7 +1,7 @@
 {
 	"name": "sveltekit-session",
 	"description": "A session management library for SvelteKit",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"keywords": [
 		"svelte",
 		"sveltekit",
