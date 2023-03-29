@@ -32,7 +32,7 @@ const redisClient = new Redis({ port: 6379, host: 'localhost' });
 const redisStore = new RedisStore(redisClient); // pass in the redisClient
 
 //new SessionStore(sessionOptions: SessionOptions, store: Store, cookieOptions?: CookieOptions)
-export const sessionStore = new SessionStore({ ttl: 60 * 60 * 24 * 7, refreshSession: true }, redisStore);
+export const sessionStore = new SessionStore({ ttl: 60 * 60 * 24 * 7, refreshSession: true }, redisStore, { path: '/' });
 ```
 
 Add the handle hook in `/src/hooks.server.ts`.
@@ -40,6 +40,7 @@ Add the handle hook in `/src/hooks.server.ts`.
 ```ts
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
+import { handleSession } from 'sveltekit-session';
 import { sessionStore } from '$lib/server/session';
 
 // your handle hook
