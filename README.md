@@ -78,7 +78,10 @@ export const load = async (event) => {
 
 	// remove specific sessionId from store
 	// THIS WILL NOT DELETE THE COOKIE. USE session.destroy() INSTEAD
-	await sessionStore.destroySession(sessionId);
+	await sessionStore.deleteSession(sessionId);
+
+	// remove all sessionIds from store
+	await sessionStore.deleteAllSessions();
 };
 ```
 

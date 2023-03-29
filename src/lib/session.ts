@@ -67,7 +67,7 @@ class SvelteKitSession<T> {
 	}
 
 	async destroy() {
-		await this.sessionStore.destroySession(this.id);
+		await this.sessionStore.deleteSession(this.id);
 		this.requestEvent.cookies.delete(this.sessionName, { path: '/' });
 	}
 }
@@ -130,7 +130,7 @@ export class SessionStore {
 		};
 	}
 
-	async destroySession(sessionId: string) {
+	async deleteSession(sessionId: string) {
 		/**
 		 * !! Use Session.destroy() instead !!
 		 * This method is for deleting sessions from the store and does not delete/destroy the cookie/the session object.
@@ -197,6 +197,10 @@ export class SessionStore {
 
 	async listSessions() {
 		return await this.store.keys();
+	}
+
+	async deleteAllSessions() {
+		this.store.clear();
 	}
 }
 
