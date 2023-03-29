@@ -1,3 +1,4 @@
+// @ts-expect-error - ioredis is not a dependency of this package
 import type { Redis } from 'ioredis';
 import type { Store } from './session';
 
