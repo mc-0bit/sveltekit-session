@@ -7,9 +7,6 @@ import type { ReadonlyDeep, Simplify } from 'type-fest';
 
 type MaybePromise<T> = T | Promise<T>;
 type ResolveType = (event: RequestEvent, opts?: ResolveOptions) => MaybePromise<Response>;
-type FallbackType<T> = Simplify<{
-	[K in keyof T]: T[K] extends object ? FallbackType<T[K]> : T[K];
-}>;
 
 export interface Store {
 	set(key: string, value: any, ttl?: number): Promise<void>;
@@ -21,13 +18,13 @@ export interface Store {
 }
 
 class SvelteKitSession<T> {
-	private sessionData: FallbackType<T>;
+	private sessionData: T;
 	private sessionId: string;
 	private sessionName: string;
 	private sessionStore: SessionStore;
 	private requestEvent: RequestEvent;
 
-	constructor(data: FallbackType<T>, sessionId: string, sessionName: string, sessionStore: SessionStore, requestEvent: RequestEvent) {
+	constructor(data: T, sessionId: string, sessionName: string, sessionStore: SessionStore, requestEvent: RequestEvent) {
 		this.sessionData = data;
 		this.sessionId = sessionId;
 		this.sessionName = sessionName;
@@ -75,7 +72,7 @@ class SvelteKitSession<T> {
 	}
 }
 
-export type Session<T> = Simplify<FallbackType<T> & SvelteKitSession<T>>;
+export type Session<T> = Simplify<T & SvelteKitSession<T>>;
 
 export type SessionOptions = {
 	/**
