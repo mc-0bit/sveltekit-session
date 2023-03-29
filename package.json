@@ -18,6 +18,17 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"svelte": "./dist/index.js"
+		},
+		"./redis.js": {
+			"types": "./dist/redis.d.ts",
+			"default": "./dist/redis.js"
+		}
+	},
+	"typesVersions": {
+		">4.0": {
+			"redis": [
+				"./dist/redis.d.ts"
+			]
 		}
 	},
 	"files": [
