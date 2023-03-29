@@ -36,6 +36,10 @@ class SvelteKitSession<T> {
 
 		return new Proxy(this, {
 			set(target: any, name: string, value) {
+				if (name === 'data') {
+					target.sessionData = value;
+					return true;
+				}
 				target.sessionData[name] = value;
 				return true;
 			},
@@ -58,6 +62,8 @@ class SvelteKitSession<T> {
 	get data() {
 		return this.sessionData;
 	}
+
+	set data(value) {}
 
 	get id() {
 		return this.sessionId;
