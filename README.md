@@ -31,6 +31,8 @@ const redisStore = new RedisStore(redisClient); // pass in the redisClient
 export const sessionManager = new SessionManager({ ttl: 60 * 60 * 24 * 7, refreshSession: true }, redisStore, { path: '/' });
 ```
 
+See [SessionManager Options](#sessionmanager-options) for more information on the options.
+
 Add the handle hook in `/src/hooks.server.ts`.
 
 ```ts
@@ -119,4 +121,27 @@ interface Store {
 	clear(): Promise<void>;
 	keys(): Promise<string[]>;
 }
+```
+
+## SessionManager options
+
+```ts
+type SessionOptions = {
+	/**
+	 * Number of seconds until the session expires.
+	 */
+	ttl: number;
+	/** @defaultValue `true`
+	 * If true, the session will be refreshed on every request.
+	 */
+	refreshSession?: boolean;
+	/** @defaultValue `sessionId`
+	 * The name of the session cookie
+	 */
+	name?: string;
+};
+
+type CookieOptions = Omit<CookieSerializeOptions, 'expires' | 'maxAge'>;  // expires and maxAge are automatically set based on the ttl
+// Check out the @types/cookie package for more information on CookieSerializeOptions
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/cookie/index.d.ts#L14
 ```
