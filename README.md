@@ -1,6 +1,6 @@
 <div align="center">
 	<h1>SvelteKit-Session</h1>
-	<p>Simple SvelteKit session management.</p>
+	<h3>Simple SvelteKit session management.</h3>
 	<a href="https://www.npmjs.com/package/sveltekit-session">
 		<img alt="npm license" src="https://img.shields.io/npm/l/sveltekit-session">
 	</a>
@@ -25,8 +25,6 @@ npm install sveltekit-session
 ```
 npm install sveltekit-session ioredis
 ```
-
-<br>
 
 ## Quickstart
 
