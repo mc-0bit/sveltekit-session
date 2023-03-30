@@ -1,5 +1,3 @@
-<br>
-
 <div align="center">
 	<h1>SvelteKit-Session</h1>
 	<p>Simple SvelteKit session management.</p>
