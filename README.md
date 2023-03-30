@@ -29,6 +29,7 @@ npm install sveltekit-session ioredis
 ## Quickstart
 
 1. Create an instance of `SessionManager`. This example uses the build in `RedisStore`.
+
    `/lib/server/session.ts`
 
    ```ts
@@ -86,7 +87,7 @@ npm install sveltekit-session ioredis
    	// destroy session
    	request.locals.session.destroy();
 
-   	// get a list of sessionIds
+   	// get a list of all sessionIds
    	await sessionManager.listSessions();
 
    	// remove specific sessionId from store
@@ -159,6 +160,6 @@ type SessionOptions = {
 };
 
 type CookieOptions = Omit<CookieSerializeOptions, 'expires' | 'maxAge'>; // expires and maxAge are automatically set based on the ttl
-// Check out the @types/cookie package for more information on CookieSerializeOptions
+// Take a look at the @types/cookie package for more information on CookieSerializeOptions
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/cookie/index.d.ts#L14
 ```
