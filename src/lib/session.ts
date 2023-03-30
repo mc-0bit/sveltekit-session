@@ -67,8 +67,7 @@ class SvelteKitSession<T> {
 	}
 
 	async destroy() {
-		await this.sessionManager.deleteSession(this.id);
-		this.requestEvent.cookies.delete(this.sessionName, { path: '/' });
+		await this.sessionManager.deleteSession(this.id, this.requestEvent);
 	}
 }
 
@@ -130,12 +129,21 @@ export class SessionManager {
 		};
 	}
 
-	async deleteSession(sessionId: string) {
-		/**
-		 * !! Use Session.destroy() instead !!
-		 * This method is for deleting sessions from the store and does not delete/destroy the cookie/the session object.
-		 */
+	/**
+	 * **!!!!** - Use `Session.destroy()` if you want to delete the session from the store and destroy the cookie. - **!!!!** 
+	 * 
+	 * Deletes the session from the store 
+	 *  
+	 * Only pass in `sessionId`
+	 * @param sessionId - session id
+	 * @param requestEvent - !! Don't pass this !!
+	 */
+	async deleteSession(sessionId: string, requestEvent?: RequestEvent) {
 		await this.store.delete(sessionId);
+		if (requestEvent) {
+			delete requestEvent.locals.session;
+			requestEvent.cookies.delete(this.name, this.getCookieOptions());
+		}
 	}
 
 	async createSession(session: any, requestEvent: RequestEvent) {
