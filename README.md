@@ -141,7 +141,7 @@ type SessionOptions = {
 	name?: string;
 };
 
-type CookieOptions = Omit<CookieSerializeOptions, 'expires' | 'maxAge'>;  // expires and maxAge are automatically set based on the ttl
+type CookieOptions = Omit<CookieSerializeOptions, 'expires' | 'maxAge'>; // expires and maxAge are automatically set based on the ttl
 // Check out the @types/cookie package for more information on CookieSerializeOptions
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/cookie/index.d.ts#L14
 ```

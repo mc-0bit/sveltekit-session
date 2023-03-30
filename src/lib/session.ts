@@ -130,10 +130,10 @@ export class SessionManager {
 	}
 
 	/**
-	 * **!!!!** - Use `Session.destroy()` if you want to delete the session from the store and destroy the cookie. - **!!!!** 
-	 * 
-	 * Deletes the session from the store 
-	 *  
+	 * **!!!!** - Use `Session.destroy()` if you want to delete the session from the store and destroy the cookie. - **!!!!**
+	 *
+	 * Deletes the session from the store
+	 *
 	 * Only pass in `sessionId`
 	 * @param sessionId - session id
 	 * @param requestEvent - !! Don't pass this !!
