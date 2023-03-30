@@ -28,7 +28,7 @@ npm install sveltekit-session ioredis
 
 ## Quickstart
 
-1. Create an instance of `SessionManager`. This example uses the build in `RedisStore`.
+1. Create an instance of `SessionManager`. This example uses the built-in `RedisStore`.
 
    `/lib/server/session.ts`
 
