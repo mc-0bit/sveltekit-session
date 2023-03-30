@@ -103,7 +103,7 @@ npm install sveltekit-session ioredis
 
 ## Typing your session
 
-Import the `Session` type and add it to `App.Locals` interface then pass your type to the `Session` type.
+Import the `Session` type and add it to the `App.Locals` interface, then pass your type to the `Session` type.
 
 `/src/app.d.ts`
 
