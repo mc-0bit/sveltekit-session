@@ -178,6 +178,7 @@ export class SessionManager {
 
 		const session = await this.getSession(cookie);
 		if (!session) {
+			requestEvent.cookies.delete(this.name, this.getCookieOptions());
 			return;
 		}
 
