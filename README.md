@@ -19,7 +19,7 @@ npm install sveltekit-session ioredis
 `/lib/server/session.ts`
 
 ```ts
-import { SessionStore, handleSession } from 'sveltekit-session';
+import { SessionManager, handleSession } from 'sveltekit-session';
 import RedisStore from 'sveltekit-session/redis';
 import Redis from 'ioredis';
 
@@ -27,8 +27,8 @@ const redisClient = new Redis({ port: 6379, host: 'localhost' });
 
 const redisStore = new RedisStore(redisClient); // pass in the redisClient
 
-//new SessionStore(sessionOptions: SessionOptions, store: Store, cookieOptions?: CookieOptions)
-export const sessionStore = new SessionStore({ ttl: 60 * 60 * 24 * 7, refreshSession: true }, redisStore, { path: '/' });
+//new SessionManager(sessionOptions: SessionOptions, store: Store, cookieOptions?: CookieOptions)
+export const sessionManager = new SessionManager({ ttl: 60 * 60 * 24 * 7, refreshSession: true }, redisStore, { path: '/' });
 ```
 
 Add the handle hook in `/src/hooks.server.ts`.
@@ -37,7 +37,7 @@ Add the handle hook in `/src/hooks.server.ts`.
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { handleSession } from 'sveltekit-session';
-import { sessionStore } from '$lib/server/session';
+import { sessionManager } from '$lib/server/session';
 
 // your handle hook
 export const myHandle = (async ({ event, resolve }) => {
@@ -46,7 +46,7 @@ export const myHandle = (async ({ event, resolve }) => {
 	return response;
 }) satisfies Handle;
 
-export const handle = sequence(handleSession(sessionStore), myHandle); // make sure to add handleSession before any other hooks that make use of the session
+export const handle = sequence(handleSession(sessionManager), myHandle); // make sure to add handleSession before any other hooks that make use of the session
 ```
 
 Check out the SvelteKit docs on [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence).
@@ -56,7 +56,7 @@ Check out the SvelteKit docs on [sequence](https://kit.svelte.dev/docs/modules#s
 It's as simple as this.
 
 ```ts
-import { sessionStore } from '$lib/server/session';
+import { sessionManager } from '$lib/server/session';
 
 export const load = async (event) => {
 	// check if session exists
@@ -65,7 +65,7 @@ export const load = async (event) => {
 	}
 
 	// create session
-	await sessionStore.createSession({ username: 'foo' }, event);
+	await sessionManager.createSession({ username: 'foo' }, event);
 
 	// use session
 	request.locals.session.email = 'bar@baz.com';
@@ -74,14 +74,14 @@ export const load = async (event) => {
 	request.locals.session.destroy();
 
 	// get a list of sessionIds
-	await sessionStore.listSessions();
+	await sessionManager.listSessions();
 
 	// remove specific sessionId from store
 	// THIS WILL NOT DELETE THE COOKIE. USE session.destroy() INSTEAD
-	await sessionStore.deleteSession(sessionId);
+	await sessionManager.deleteSession(sessionId);
 
 	// remove all sessionIds from store
-	await sessionStore.deleteAllSessions();
+	await sessionManager.deleteAllSessions();
 };
 ```
 

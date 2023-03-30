@@ -21,14 +21,14 @@ class SvelteKitSession<T> {
 	private sessionData: Simplify<T>;
 	private sessionId: string;
 	private sessionName: string;
-	private sessionStore: SessionStore;
+	private sessionManager: SessionManager;
 	private requestEvent: RequestEvent;
 
-	constructor(data: T, sessionId: string, sessionName: string, sessionStore: SessionStore, requestEvent: RequestEvent) {
+	constructor(data: T, sessionId: string, sessionName: string, sessionManager: SessionManager, requestEvent: RequestEvent) {
 		this.sessionData = data;
 		this.sessionId = sessionId;
 		this.sessionName = sessionName;
-		this.sessionStore = sessionStore;
+		this.sessionManager = sessionManager;
 		this.requestEvent = requestEvent;
 
 		return new Proxy(this, {
@@ -67,7 +67,7 @@ class SvelteKitSession<T> {
 	}
 
 	async destroy() {
-		await this.sessionStore.deleteSession(this.id);
+		await this.sessionManager.deleteSession(this.id);
 		this.requestEvent.cookies.delete(this.sessionName, { path: '/' });
 	}
 }
@@ -91,7 +91,7 @@ export type SessionOptions = {
 
 export type CookieOptions = Omit<CookieSerializeOptions, 'expires' | 'maxAge'>;
 
-export class SessionStore {
+export class SessionManager {
 	/**
 	 * @param sessionOptions - Session options
 	 * @param store - compatible store
@@ -204,14 +204,14 @@ export class SessionStore {
 	}
 }
 
-export function handleSession(sessionStore: SessionStore) {
+export function handleSession(sessionManager: SessionManager) {
 	return async function handle({ event, resolve }) {
 		// @ts-expect-error - handleSession is private
-		await sessionStore.handleSession(event);
+		await sessionManager.handleSession(event);
 		// @ts-expect-error - resolve is private
-		const response = await sessionStore.resolve(event, resolve);
+		const response = await sessionManager.resolve(event, resolve);
 		return response;
 	} satisfies Handle;
 }
 
-export default SessionStore;
+export default SessionManager;
