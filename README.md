@@ -1,6 +1,20 @@
-# SvelteKit-Session
+<br>
 
-Simple SvelteKit session management.
+<div align="center">
+	<h1>SvelteKit-Session</h1>
+	<p>Simple SvelteKit session management.</p>
+	<a href="https://www.npmjs.com/package/sveltekit-session">
+		<img alt="npm license" src="https://img.shields.io/npm/l/sveltekit-session">
+	</a>
+	<a href="https://www.npmjs.com/package/sveltekit-session">
+		<img alt="npm license" src="https://img.shields.io/npm/v/sveltekit-session">
+	</a>
+	<a href="https://www.npmjs.com/package/sveltekit-session">
+		<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/mc-0bit/sveltekit-session/main.yml">
+	</a>
+</div>
+
+<br>
 
 ## Installation
 
@@ -14,82 +28,85 @@ npm install sveltekit-session
 npm install sveltekit-session ioredis
 ```
 
+<br>
+
 ## Quickstart
 
-`/lib/server/session.ts`
+1. Create an instance of `SessionManager`. This example uses the build in `RedisStore`.
+   `/lib/server/session.ts`
 
-```ts
-import { SessionManager, handleSession } from 'sveltekit-session';
-import RedisStore from 'sveltekit-session/redis';
-import Redis from 'ioredis';
+   ```ts
+   import { SessionManager, handleSession } from 'sveltekit-session';
+   import RedisStore from 'sveltekit-session/redis';
+   import Redis from 'ioredis';
 
-const redisClient = new Redis({ port: 6379, host: 'localhost' });
+   const redisClient = new Redis({ port: 6379, host: 'localhost' });
 
-const redisStore = new RedisStore(redisClient); // pass in the redisClient
+   const redisStore = new RedisStore(redisClient); // pass in the redisClient
 
-//new SessionManager(sessionOptions: SessionOptions, store: Store, cookieOptions?: CookieOptions)
-export const sessionManager = new SessionManager({ ttl: 60 * 60 * 24 * 7, refreshSession: true }, redisStore, { path: '/' });
-```
+   //new SessionManager(sessionOptions: SessionOptions, store: Store, cookieOptions?: CookieOptions)
+   export const sessionManager = new SessionManager({ ttl: 60 * 60 * 24 * 7, refreshSession: true }, redisStore, { path: '/' });
+   ```
 
-See [SessionManager Options](#sessionmanager-options) for more information on the options.
+   See [SessionManager Options](#sessionmanager-options) for more information.
 
-Add the handle hook in `/src/hooks.server.ts`.
+2. Add the handle hook in `/src/hooks.server.ts`.
 
-```ts
-import type { Handle } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks';
-import { handleSession } from 'sveltekit-session';
-import { sessionManager } from '$lib/server/session';
+   ```ts
+   import type { Handle } from '@sveltejs/kit';
+   import { sequence } from '@sveltejs/kit/hooks';
+   import { handleSession } from 'sveltekit-session';
+   import { sessionManager } from '$lib/server/session';
 
-// your handle hook
-export const myHandle = (async ({ event, resolve }) => {
-	const session = event.locals.session; // session data is ready to be accessed
-	const response = await resolve(event);
-	return response;
-}) satisfies Handle;
+   // your handle hook
+   export const myHandle = (async ({ event, resolve }) => {
+   	const session = event.locals.session; // session data is ready to be accessed
+   	const response = await resolve(event);
+   	return response;
+   }) satisfies Handle;
 
-export const handle = sequence(handleSession(sessionManager), myHandle); // make sure to add handleSession before any other hooks that make use of the session
-```
+   export const handle = sequence(handleSession(sessionManager), myHandle); // make sure to add handleSession before any other hooks that make use of the session
+   ```
 
-Check out the SvelteKit docs on [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence).
+   Check out the SvelteKit docs on [sequence](https://kit.svelte.dev/docs/modules#sveltejs-kit-hooks-sequence).
 
-## Using SvelteKit-Session
+3. Using SvelteKit-Session is then as simple as this.
 
-It's as simple as this.
+   ```ts
+   import { sessionManager } from '$lib/server/session';
 
-```ts
-import { sessionManager } from '$lib/server/session';
+   export const load = async (event) => {
+   	// check if session exists
+   	if (!event.locals.session) {
+   		throw error(401, 'Not logged in');
+   	}
 
-export const load = async (event) => {
-	// check if session exists
-	if (!event.locals.session) {
-		throw error(401, 'Not logged in');
-	}
+   	// create session
+   	await sessionManager.createSession({ username: 'foo' }, event);
 
-	// create session
-	await sessionManager.createSession({ username: 'foo' }, event);
+   	// use session
+   	request.locals.session.email = 'bar@baz.com';
 
-	// use session
-	request.locals.session.email = 'bar@baz.com';
+   	// destroy session
+   	request.locals.session.destroy();
 
-	// destroy session
-	request.locals.session.destroy();
+   	// get a list of sessionIds
+   	await sessionManager.listSessions();
 
-	// get a list of sessionIds
-	await sessionManager.listSessions();
+   	// remove specific sessionId from store
+   	// THIS WILL NOT DELETE THE COOKIE. USE session.destroy() INSTEAD
+   	await sessionManager.deleteSession(sessionId);
 
-	// remove specific sessionId from store
-	// THIS WILL NOT DELETE THE COOKIE. USE session.destroy() INSTEAD
-	await sessionManager.deleteSession(sessionId);
+   	// remove all sessionIds from store
+   	await sessionManager.deleteAllSessions();
+   };
+   ```
 
-	// remove all sessionIds from store
-	await sessionManager.deleteAllSessions();
-};
-```
+<br>
 
 ## Typing your session
 
-Create a `Session` type with your own properties.
+Import the `Session` type and add it to `App.Locals` interface then pass your type to the `Session` type.
 
 `/src/app.d.ts`
 
@@ -105,6 +122,8 @@ declare namespace App {
 	}
 }
 ```
+
+<br>
 
 ## Custom stores
 
@@ -122,6 +141,8 @@ interface Store {
 	keys(): Promise<string[]>;
 }
 ```
+
+<br>
 
 ## SessionManager options
 
