@@ -7,7 +7,8 @@
 		"sveltekit",
 		"session",
 		"redis",
-		"sveltekit-session"
+		"sveltekit-session",
+		"cookie"
 	],
 	"homepage": "https://github.com/mc-0bit/sveltekit-session",
 	"author": "mc-0bit",
