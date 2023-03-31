@@ -7,7 +7,7 @@
 	<a href="https://www.npmjs.com/package/sveltekit-session">
 		<img alt="npm license" src="https://img.shields.io/npm/v/sveltekit-session">
 	</a>
-	<a href="https://www.npmjs.com/package/sveltekit-session">
+	<a href="https://github.com/mc-0bit/sveltekit-session/actions">
 		<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/mc-0bit/sveltekit-session/main.yml">
 	</a>
 </div>
