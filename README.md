@@ -33,7 +33,7 @@ npm install sveltekit-session ioredis
    `/src/lib/server/session.ts`
 
    ```ts
-   import { SessionManager, handleSession } from 'sveltekit-session';
+   import { SessionManager } from 'sveltekit-session';
    import RedisStore from 'sveltekit-session/redis';
    import Redis from 'ioredis';
 
