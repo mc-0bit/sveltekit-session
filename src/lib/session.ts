@@ -1,6 +1,6 @@
 import type { Handle, RequestEvent, ResolveOptions } from '@sveltejs/kit/types';
 import uid from 'uid-safe';
-import { isString } from 'lodash';
+import _ from 'lodash';
 import { serialize } from 'cookie';
 import type { CookieSerializeOptions } from 'cookie';
 import type { ReadonlyDeep, Simplify } from 'type-fest';
@@ -158,7 +158,7 @@ export class SessionManager {
 
 	async getSession(cookiesOrSessionId: string | RequestEvent['cookies']) {
 		let sessionId;
-		if (isString(cookiesOrSessionId)) {
+		if (_.isString(cookiesOrSessionId)) {
 			sessionId = cookiesOrSessionId;
 		} else {
 			sessionId = cookiesOrSessionId.get(this.name);
